@@ -1,5 +1,5 @@
 {
-    "name": "symfony/ldap",
+    "name": "magento-mcom/ldap",
     "type": "library",
     "description": "An abstraction in front of PHP's LDAP functions, compatible with PHP 5.3.9 onwards.",
     "keywords": ["ldap", "active directory"],
@@ -31,5 +31,8 @@
         "branch-alias": {
             "dev-master": "2.8-dev"
         }
+    },
+    "replace": {
+        "symfony/ldap":"self.version"
     }
 }
