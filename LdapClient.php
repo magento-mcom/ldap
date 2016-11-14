@@ -50,7 +50,7 @@ class LdapClient implements LdapClientInterface
         $useSsl = false,
         $useStartTls = false,
         $optReferrals = false,
-        $timeout = 0
+        $timeout = 60
     ) {
         if (!extension_loaded('ldap')) {
             throw new LdapException('The ldap module is needed.');
@@ -146,9 +146,7 @@ class LdapClient implements LdapClientInterface
 
             ldap_set_option($this->connection, LDAP_OPT_PROTOCOL_VERSION, $this->version);
             ldap_set_option($this->connection, LDAP_OPT_REFERRALS, $this->optReferrals);
-            if ($this->timeout > 0) {
-                ldap_set_option($this->connection, LDAP_OPT_NETWORK_TIMEOUT, $this->timeout);
-            }
+            ldap_set_option($this->connection, LDAP_OPT_NETWORK_TIMEOUT, $this->timeout);
 
             if ($this->useStartTls) {
                 ldap_start_tls($this->connection);
