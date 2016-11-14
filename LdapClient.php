@@ -30,6 +30,7 @@ class LdapClient implements LdapClientInterface
     private $useStartTls;
     private $optReferrals;
     private $connection;
+    private $timeout;
 
     /**
      * Constructor.
@@ -40,9 +41,17 @@ class LdapClient implements LdapClientInterface
      * @param bool   $useSsl
      * @param bool   $useStartTls
      * @param bool   $optReferrals
+     * @param int    $timeout
      */
-    public function __construct($host = null, $port = 389, $version = 3, $useSsl = false, $useStartTls = false, $optReferrals = false)
-    {
+    public function __construct(
+        $host = null,
+        $port = 389,
+        $version = 3,
+        $useSsl = false,
+        $useStartTls = false,
+        $optReferrals = false,
+        $timeout = 0
+    ) {
         if (!extension_loaded('ldap')) {
             throw new LdapException('The ldap module is needed.');
         }
@@ -53,6 +62,7 @@ class LdapClient implements LdapClientInterface
         $this->useSsl = (bool) $useSsl;
         $this->useStartTls = (bool) $useStartTls;
         $this->optReferrals = (bool) $optReferrals;
+        $this->timeout = $timeout;
     }
 
     public function __destruct()
@@ -136,6 +146,9 @@ class LdapClient implements LdapClientInterface
 
             ldap_set_option($this->connection, LDAP_OPT_PROTOCOL_VERSION, $this->version);
             ldap_set_option($this->connection, LDAP_OPT_REFERRALS, $this->optReferrals);
+            if ($this->timeout > 0) {
+                ldap_set_option($this->connection, LDAP_OPT_NETWORK_TIMEOUT, $this->timeout);
+            }
 
             if ($this->useStartTls) {
                 ldap_start_tls($this->connection);
