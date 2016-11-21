@@ -33,7 +33,7 @@ interface LdapClientInterface
      */
     public function bind($dn = null, $password = null);
 
-    /*
+    /**
      * Find a username into ldap connection.
      *
      * @param string $dn
